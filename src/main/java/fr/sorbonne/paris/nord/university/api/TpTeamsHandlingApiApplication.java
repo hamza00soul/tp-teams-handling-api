@@ -9,6 +9,4 @@ public class TpTeamsHandlingApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(TpTeamsHandlingApiApplication.class, args);
     }
-
-
 }

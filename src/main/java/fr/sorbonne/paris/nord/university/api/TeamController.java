@@ -1,23 +1,28 @@
-package fr.sorbonne.paris.nord.university.api.Service;
+package fr.sorbonne.paris.nord.university.api;
 
+import fr.sorbonne.paris.nord.university.api.DTOs.TeamDto;
 import fr.sorbonne.paris.nord.university.api.Entity.Team;
+import fr.sorbonne.paris.nord.university.api.Mappers.TeamMapper;
 import fr.sorbonne.paris.nord.university.api.Repository.TeamRepository;
+import fr.sorbonne.paris.nord.university.api.Service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Service
+@Controller
 @RestController
 @RequestMapping("/teams")
 public class TeamController {
 
 
-    private final TeamRepository teamRepository;
+    private final TeamService teamService;
+
     @Autowired
-    public TeamController(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
+    public TeamController(TeamRepository teamRepository, TeamMapper mapper) {
+        this.teamService = new TeamService(teamRepository,mapper);
     }
 
     @GetMapping("/hello")
@@ -26,41 +31,27 @@ public class TeamController {
     }
 
     @GetMapping("/get/{id}")
-    public Team getTeamById(@PathVariable Long id) {
-        return teamRepository.findById(id).orElse(null);
+    public TeamDto getTeamById(@PathVariable Long id) {
+        return teamService.getTeamById(id);
     }
 
     @GetMapping("/getAll")
-    public List<Team> getAllTeams() {
-        return teamRepository.findAll();
+    public List<TeamDto> getAllTeams() {
+        return teamService.getAllTeams();
     }
 
-    @GetMapping("/add")
-    public List<Team> createTeam(@RequestParam("name") String name, @RequestParam("slogan") String slogan) {
-        Team team = new Team(name, slogan);
-        return insertTeam(team) ;
-    }
     @PostMapping("/add")
-    public List<Team> insertTeam(@RequestBody Team team) {
-        teamRepository.save(team);
-        return teamRepository.findAll();
+    public List<TeamDto> insertTeam(@RequestBody Team team) {
+        return teamService.insertTeam(team);
     }
 
     @PutMapping("/update/{id}")
-    public Team updateTeamById(@PathVariable Long id) {
-        Team team = teamRepository.findById(id).orElse(null);
-        if (team != null) {
-            team.setName("Modified");
-            teamRepository.save(team);
-        }
-        return team;
+    public TeamDto updateTeamById(@PathVariable Long id, @RequestBody Team team) {
+        return teamService.updateTeamById(id,team);
     }
 
     @DeleteMapping("/delete/{id}")
-    public List<Team> deleteTeamById(@PathVariable Long id) {
-        Team team = teamRepository.findById(id).orElse(null);
-        if (team != null)
-            teamRepository.deleteById(id);
-        return teamRepository.findAll();
+    public List<TeamDto> deleteTeamById(@PathVariable Long id) {
+        return teamService.deleteTeamById(id);
     }
 }

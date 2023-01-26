@@ -1,13 +1,20 @@
 package fr.sorbonne.paris.nord.university.api.DTOs;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
+
 
 @Data
 public class TeamDto {
+
     private Long id;
+
+    @NotEmpty
     private String name;
+
+    @Size(max = 50)
     private String slogan;
 
     public TeamDto() {

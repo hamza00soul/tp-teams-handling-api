@@ -1,13 +1,16 @@
-package fr.sorbonne.paris.nord.university.api;
+package fr.sorbonne.paris.nord.university.api.Controller;
 
 import fr.sorbonne.paris.nord.university.api.DTOs.TeamDto;
 import fr.sorbonne.paris.nord.university.api.Entity.Team;
 import fr.sorbonne.paris.nord.university.api.Mappers.TeamMapper;
 import fr.sorbonne.paris.nord.university.api.Repository.TeamRepository;
 import fr.sorbonne.paris.nord.university.api.Service.TeamService;
+import fr.sorbonne.paris.nord.university.api.exception.EntityInvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +44,10 @@ public class TeamController {
     }
 
     @PostMapping("/add")
-    public List<TeamDto> insertTeam(@RequestBody Team team) {
-        return teamService.insertTeam(team);
+    public List<TeamDto> insertTeam(@RequestBody @Validated() TeamDto teamdto , Errors errors) {
+        if(errors.hasErrors())
+            throw new EntityInvalidException("Invalid Entity");
+        return teamService.insertTeam(teamdto);
     }
 
     @PutMapping("/update/{id}")

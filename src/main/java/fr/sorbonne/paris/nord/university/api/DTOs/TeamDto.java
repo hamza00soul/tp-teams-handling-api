@@ -1,9 +1,13 @@
 package fr.sorbonne.paris.nord.university.api.DTOs;
 
+import fr.sorbonne.paris.nord.university.api.Entity.Player;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -16,6 +20,8 @@ public class TeamDto {
 
     @Size(max = 50)
     private String slogan;
+
+    private List<PlayerDto> playersDto = new ArrayList<>();
 
     public TeamDto() {
     }

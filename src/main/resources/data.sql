@@ -6,7 +6,7 @@ INSERT INTO team (name, slogan) VALUES ('Manchester United', 'Les red devils');
 
 
 
-INSERT INTO player (firstname, lastname, birthdaY, position)
+INSERT INTO player (first_name, last_name, birthday, position)
 VALUES ('Lionel', 'Messi', DATE '1987-06-24', 'FORWARD'),
        ('Kylian', 'Mbappé', DATE '1998-12-20', 'FORWARD'),
        ('Karim', 'Benzema', DATE '1987-12-19', 'FORWARD'),

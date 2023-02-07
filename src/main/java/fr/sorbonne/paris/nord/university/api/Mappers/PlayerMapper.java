@@ -2,6 +2,7 @@ package fr.sorbonne.paris.nord.university.api.Mappers;
 
 import fr.sorbonne.paris.nord.university.api.DTOs.PlayerDto;
 import fr.sorbonne.paris.nord.university.api.Entity.Player;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +15,7 @@ public class PlayerMapper {
             player.setFirstName(playerdto.getFirstName());
             player.setLastName(playerdto.getLastName());
             player.setBirthday(playerdto.getBirthday());
+            player.setPosition(playerdto.getPosition());
         }
         return player;
     }
@@ -25,6 +27,7 @@ public class PlayerMapper {
             playerdto.setFirstName(player.getFirstName());
             playerdto.setLastName(player.getLastName());
             playerdto.setBirthday(player.getBirthday());
+            playerdto.setPosition(player.getPosition());
         }
         return playerdto;
     }

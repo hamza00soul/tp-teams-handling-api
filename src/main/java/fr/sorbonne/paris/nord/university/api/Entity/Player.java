@@ -14,12 +14,17 @@ public class Player {
     private String firstName;
     private String lastName;
     private Date birthday;
+    private String position;
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "teamId")
+    private Team team;
 
-    public Player(Long id, String firstName, String lastName, Date birthday) {
+    public Player(Long id, String firstName, String lastName, Date birthday, String position) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
+        this.position = position;
     }
 
     public Player() {
@@ -56,5 +61,21 @@ public class Player {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

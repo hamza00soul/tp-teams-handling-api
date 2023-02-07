@@ -5,6 +5,7 @@ import fr.sorbonne.paris.nord.university.api.DTOs.PlayerDto;
 import fr.sorbonne.paris.nord.university.api.Entity.Player;
 
 import fr.sorbonne.paris.nord.university.api.Mappers.PlayerMapper;
+import fr.sorbonne.paris.nord.university.api.Mappers.TeamMapper;
 import fr.sorbonne.paris.nord.university.api.Repository.PlayerRepository;
 import fr.sorbonne.paris.nord.university.api.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +18,34 @@ import java.util.List;
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
-    private final PlayerMapper mapper;
+    private final PlayerMapper pm;
+    private final TeamMapper tm;
 
     @Autowired
-    public PlayerService(PlayerRepository playerRepository, PlayerMapper mapper) {
+    public PlayerService(PlayerRepository playerRepository, PlayerMapper pm, TeamMapper tm) {
         this.playerRepository = playerRepository;
-        this.mapper = mapper;
+        this.pm = pm;
+        this.tm = tm;
     }
-
-    public PlayerDto getTeamById(@PathVariable Long id) {
+    public PlayerDto getPlayerById(@PathVariable Long id) {
         Player player = playerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Entity Not Found"));
-        return mapper.map(player);
+        return pm.map(player);
     }
 
     public List<PlayerDto> getAllPlayers() {
-        return playerRepository.findAll().stream().map(team -> mapper.map(team)).toList();
+        return playerRepository.findAll().stream().map(player -> pm.map(player)).toList();
     }
 
-    public List<PlayerDto> insertTeam(PlayerDto playerdto) {
-        Player player = mapper.map(playerdto);
+    public List<PlayerDto> insertPlayer(PlayerDto playerdto) {
+        Player player = pm.map(playerdto);
+        //player.setTeam(tm.map(playerdto.getTeamDTO()));
         /*if(team.getName()== null || team.getSlogan() == null )
             throw new EntityInvalidException("Invalid Entity");*/
         playerRepository.save(player);
-        return playerRepository.findAll().stream().map(t -> mapper.map(t)).toList();
+        return playerRepository.findAll().stream().map(t -> pm.map(t)).toList();
     }
 
-    public PlayerDto updateTeamById(Long id, Player UpdatedPlayer) {
+    public PlayerDto updatePlayerById(Long id, Player UpdatedPlayer) {
         Player player = playerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Entity Not Found"));
         if (player != null) {
             player.setFirstName(UpdatedPlayer.getFirstName());
@@ -50,13 +53,13 @@ public class PlayerService {
             player.setBirthday(UpdatedPlayer.getBirthday());
             playerRepository.save(player);
         }
-        return mapper.map(player);
+        return pm.map(player);
     }
 
-    public List<PlayerDto> deleteTeamById(Long id) {
+    public List<PlayerDto> deletePlayerById(Long id) {
         Player player = playerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Entity Not Found"));
         if (player != null)
             playerRepository.deleteById(id);
-        return playerRepository.findAll().stream().map(t -> mapper.map(t)).toList();
+        return playerRepository.findAll().stream().map(t -> pm.map(t)).toList();
     }
 }

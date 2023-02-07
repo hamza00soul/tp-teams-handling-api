@@ -2,6 +2,9 @@ package fr.sorbonne.paris.nord.university.api.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "team")
@@ -12,6 +15,9 @@ public class Team {
     private Long id;
     private String name;
     private String slogan;
+
+    @OneToMany(mappedBy = "team")
+    private List<Player> players = new ArrayList<>();
 
     public Team() {
     }
@@ -50,5 +56,13 @@ public class Team {
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 }
